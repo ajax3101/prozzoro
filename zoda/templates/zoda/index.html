@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block tender %}
+    <section>
+  		<div class="container">
+  			  			
+  		</div>
+  	</section>
+  	<!-- Таблиця -->
+     
+    <section>
+  		<div class="container">
+  			<h1 class="text-3">Тендери</h1>
+  			<table class="table table_one">
+			  <thead class="thead-dark">
+			    <tr>
+			      <th scope="col">Заголовок</th>
+			      <th scope="col">№ Тендера</th>
+			      <th scope="col">CPV</th>
+                  <th scope="col">Очікувана вартість закупівлі</th>
+                  <th scope="col">Дата оголошення процедури</th>
+                  <th scope="col">Поточний статус процедури</th>
+                  <th scope="col">Ідентифікатор закупівлі</th>
+                  <th scope="col">Організатор закупівлі</th>
+                  <th scope="col">Процедура закупівлі</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			  {% for obj in tenders %}
+			    <tr>
+			      <td><a href="https://prozorro.gov.ua/tender/{{ obj.t_id }}" target="_blank" rel="noopener noreferrer">{{ obj.t }}</a></td>
+			      <td>{{ obj.tl }}</td>
+                  <td>{{ obj.cpv }}</td>
+                  <td>{{ obj.v }}</td>
+                  <td>{{ obj.a }}</td>
+                  <td>{{ obj.s }}</td>
+                  <td>{{ obj.t_id }}</td>
+                  <td>{{ obj.cdb}}</td>
+                  <td>{{ obj.t_method }}</td>
+			    </tr>
+			  {% endfor %}
+			  </tbody>
+			</table>
+  		</div>
+  	</section>
+{% endblock %}
