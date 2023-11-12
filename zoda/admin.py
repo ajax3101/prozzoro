@@ -6,18 +6,9 @@ from zoda.models import Tender, Region, Agency
 class TenderAdmin(admin.ModelAdmin):
     model = Tender
 
-    list_display = (
-        "t",
-        "tl",
-        "cpv",
-        "v"	,
-        "a"	,
-        "s"	,
-        "t_id",
-        "cdb",
-        "t_method",
-    )
-    list_per_page = 10
+    list_display = ("t", "tl", "cpv", "v", "a", "s", "t_id", "cdb", "t_method", "edr_id", )
+    #list_filter = ('edr_id',)
+    list_per_page = 5
     list_max_show_all = 100
     
 @admin.register(Region)

@@ -16,7 +16,7 @@ class Agency(models.Model):
         verbose_name = 'Установа'
         verbose_name_plural = 'Установи'
 
-    region = models.ForeignKey(Region, on_delete=models.CASCADE)
+    region = models.ForeignKey(Region, on_delete=models.CASCADE, verbose_name = 'Регіон')
     name = models.CharField(max_length=255, verbose_name = 'Назва')
     edrpou = models.CharField(max_length=20, unique=True, verbose_name = 'ЕДРПОУ')
 
@@ -38,7 +38,7 @@ class Tender(models.Model):
     t_id = models.CharField(max_length=255, unique=True, verbose_name = 'Ідентифікатор закупівлі')
     cdb = models.CharField(max_length=255, verbose_name = 'Організатор закупівлі')
     t_method = models.CharField(max_length=255, verbose_name = 'Процедура закупівлі')
- #   edr = models.ForeignKey(Agency, on_delete=models.CASCADE, to_field='edrpou', default='00022504')
+    edr = models.ForeignKey(Agency, on_delete=models.CASCADE, to_field='edrpou', default='00022504', verbose_name = 'Код ЄДРПОУ')
 
     
     def __str__(self):
