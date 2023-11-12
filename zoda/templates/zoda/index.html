@@ -9,40 +9,60 @@
   		</div>
   	</section>
   	<!-- Таблиця -->
-     
-    <section>
-  		<div class="container">
-  			<h2 class="text-3">Закупівлі - прозорість та підзвітність ЗОДА</h2>
-  			<table class="table table-hover">
-			  <thead class="thead-dark">
-			    <tr>
-			      <th class="align-middle" scope="col">Заголовок</th>
-			      <th class="align-middle" scope="col">№ Тендера</th>
-			      <th class="align-middle" scope="col">CPV</th>
-                  <th class="align-middle" scope="col">Очікувана вартість закупівлі</th>
-                  <th class="align-middle" scope="col">Дата оголошення процедури</th>
-                  <th class="align-middle" scope="col">Поточний статус процедури</th>
-                  <th class="align-middle" scope="col">Ідентифікатор закупівлі</th>
-                  <th class="align-middle" scope="col">Організатор закупівлі</th>
-                  <th class="align-middle" scope="col">Процедура закупівлі</th>
-			    </tr>
-			  </thead>
-			  <tbody>
-			  {% for obj in tenders %}
-			    <tr>
-			      <td class="align-middle"><a href="https://prozorro.gov.ua/tender/{{ obj.t_id }}" target="_blank" rel="noopener noreferrer">{{ obj.t }}</a></td>
-			      <td class="align-middle">{{ obj.tl }}</td>
-                  <td class="align-middle">{{ obj.cpv }}</td>
-                  <td class="align-middle">{{ obj.v }}</td>
-                  <td class="align-middle">{{ obj.a }}</td>
-                  <td class="align-middle">{{ obj.s }}</td>
-                  <td class="align-middle">{{ obj.t_id }}</td>
-                  <td class="align-middle">{{ obj.cdb}}</td>
-                  <td class="align-middle">{{ obj.t_method }}</td>
-			    </tr>
-			  {% endfor %}
-			  </tbody>
-			</table>
-  		</div>
-  	</section>
+<section>
+    <div class="container">
+        <h2 class="text-3 text-center mb-4">Закупівлі - прозорість та підзвітність ЗОДА</h2>
+        <div class="mx-auto">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="align-middle" scope="col">Заголовок</th>
+                        <th class="align-middle" scope="col">№ Тендера</th>
+                        <th class="align-middle" scope="col">CPV</th>
+                        <th class="align-middle" scope="col">Очікувана вартість закупівлі</th>
+                        <th class="align-middle" scope="col">Дата оголошення процедури</th>
+                        <th class="align-middle" scope="col">Поточний статус процедури</th>
+                        <th class="align-middle" scope="col">Ідентифікатор закупівлі</th>
+                        <th class="align-middle" scope="col">Організатор закупівлі</th>
+                        <th class="align-middle" scope="col">Процедура закупівлі</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for obj in tenders %}
+                        <tr>
+                            <td class="align-middle"><a href="https://prozorro.gov.ua/tender/{{ obj.t_id }}" target="_blank" rel="noopener noreferrer">{{ obj.t }}</a></td>
+                            <td class="align-middle">{{ obj.tl }}</td>
+                            <td class="align-middle">{{ obj.cpv }}</td>
+                            <td class="align-middle">{{ obj.v }}</td>
+                            <td class="align-middle">{{ obj.a }}</td>
+                            <td class="align-middle">{{ obj.s }}</td>
+                            <td class="align-middle">{{ obj.t_id }}</td>
+                            <td class="align-middle">{{ obj.cdb}}</td>
+                            <td class="align-middle">{{ obj.t_method }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+			<!-- блок для отображения пагинации -->
+            <div class="pagination">
+                <span class="step-links">
+                    {% if tenders.has_previous %}
+                        <a href="?page=1">&laquo; перша</a>
+                        <a href="?page={{ tenders.previous_page_number }}">попередня</a>
+                    {% endif %}
+
+                    <span class="current">
+                        Сторінка {{ tenders.number }} з {{ tenders.paginator.num_pages }}.
+                    </span>
+
+                    {% if tenders.has_next %}
+                        <a href="?page={{ tenders.next_page_number }}">наступна</a>
+                        <a href="?page={{ tenders.paginator.num_pages }}">остання &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </div>
+</section>
+
 {% endblock %}
