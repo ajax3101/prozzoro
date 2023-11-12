@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block tender %}
-    <section>
+    <section class="d-flex flex-column align-items-center"> 
   		<div class="container">
-  			  			
+			{% block tender_list_view %}
+
+			{% endblock %}
   		</div>
   	</section>
   	<!-- Таблиця -->
