@@ -1,26 +1,78 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block tender %}
-    <section class="d-flex flex-column align-items-center"> 
-  		<div class="container">
-			{% block tender_list_view %}
 
-			{% endblock %}
-  		</div>
-  	</section>
-  	<!-- Таблиця -->
+<!-- Таблиця -->
 <section>
     <div class="container">
         <h2 class="text-3 text-center mb-4">Закупівлі - прозорість та підзвітність ЗОДА</h2>
+        <!-- <section class="d-flex flex-column align-items-center">
+            <div class="container" align-items-center>
+                 Добавленная форма фильтрации 
+                <form method="get" action="{% url 'home' %}" class="mt-4">
+                    <div class="form-row">
+                        <div class="col-md-4 mb-2">
+                            {{ filter_form.region }} 
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            {{ filter_form.agency }}
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <button type="submit" class="btn btn-primary">Фільтрувати</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section> -->
+        <section class="d-flex flex-column align-items-center">
+            <form method="get" action="{% url 'home' %}" class="mt-4" id="filter-form">
+                <div class="form-row">
+                    <div class="col-md-4 mb-2">
+                        {{ filter_form.region }}
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        {{ filter_form.agency }}
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <button type="submit" class="btn btn-primary">Фільтрувати</button>
+                    </div>
+                </div>
+            </form>
+            
+            <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+            <script>
+                $(document).ready(function () {
+                    // Обработка изменения значения в поле региона
+                    $('#id_region').change(function () {
+                        var regionId = $(this).val();
+            
+                        // Очищаем поле агентства перед отправкой запроса
+                        $('#id_agency').empty().append('<option value="">Усі установи</option>');
+            
+                        // Если регион выбран, отправляем запрос для получения агентств
+                        if (regionId) {
+                            $.getJSON('/get_agencies/' + regionId + '/', function (data) {
+                                $.each(data, function (key, value) {
+                                    $('#id_agency').append('<option value="' + value.id + '">' + value.name + '</option>');
+                                });
+                            });
+                        }
+                    });
+                });
+            </script>
+            
+        </section>
         <div class="mx-auto">
             <table class="table table-hover">
                 <thead class="thead-dark">
                     <tr>
                         <th class="align-middle" scope="col">Заголовок</th>
-                        <th class="align-middle" scope="col">№ Тендера</th>
+                        <th class="align-middle" scope="col">Код ЄДРПОУ</th>
                         <th class="align-middle" scope="col">CPV</th>
                         <th class="align-middle" scope="col">Очікувана вартість закупівлі</th>
                         <th class="align-middle" scope="col">Дата оголошення процедури</th>
+                        <!-- <th class="align-middle" scope="col"><a href="?sort_by=v">Очікувана вартість закупівлі</a></th>
+                        <th class="align-middle" scope="col"><a href="?sort_by=a">Дата оголошення процедури</a></th> -->
                         <th class="align-middle" scope="col">Поточний статус процедури</th>
                         <th class="align-middle" scope="col">Ідентифікатор закупівлі</th>
                         <th class="align-middle" scope="col">Організатор закупівлі</th>
@@ -29,26 +81,27 @@
                 </thead>
                 <tbody>
                     {% for obj in tenders %}
-                        <tr>
-                            <td class="align-middle"><a href="https://prozorro.gov.ua/tender/{{ obj.t_id }}" target="_blank" rel="noopener noreferrer">{{ obj.t }}</a></td>
-                            <td class="align-middle">{{ obj.tl }}</td>
-                            <td class="align-middle">{{ obj.cpv }}</td>
-                            <td class="align-middle">{{ obj.v }}</td>
-                            <td class="align-middle">{{ obj.a }}</td>
-                            <td class="align-middle">{{ obj.s }}</td>
-                            <td class="align-middle">{{ obj.t_id }}</td>
-                            <td class="align-middle">{{ obj.cdb}}</td>
-                            <td class="align-middle">{{ obj.t_method }}</td>
-                        </tr>
+                    <tr>
+                        <td class="align-middle"><a href="https://prozorro.gov.ua/tender/{{ obj.t_id }}" target="_blank"
+                                rel="noopener noreferrer">{{ obj.t }}</a></td>
+                        <td class="align-middle">{{ obj.edr_id }}</td>
+                        <td class="align-middle">{{ obj.cpv }}</td>
+                        <td class="align-middle">{{ obj.v|floatformat:2 }}</td>
+                        <td class="align-middle">{{ obj.a|date:"d-M-Y" }} <br> {{ obj.a|time:"H:i" }}</td>
+                        <td class="align-middle">{{ obj.s }}</td>
+                        <td class="align-middle">{{ obj.t_id }}</td>
+                        <td class="align-middle">{{ obj.cdb}}</td>
+                        <td class="align-middle">{{ obj.t_method }}</td>
+                    </tr>
                     {% endfor %}
                 </tbody>
             </table>
-			<!-- блок для отображения пагинации -->
+            <!-- блок для отображения пагинации -->
             <div class="pagination">
                 <span class="step-links">
                     {% if tenders.has_previous %}
-                        <a href="?page=1">&laquo; перша</a>
-                        <a href="?page={{ tenders.previous_page_number }}">попередня</a>
+                    <a href="?page=1">&laquo; перша</a>
+                    <a href="?page={{ tenders.previous_page_number }}">попередня</a>
                     {% endif %}
 
                     <span class="current">
@@ -56,8 +109,8 @@
                     </span>
 
                     {% if tenders.has_next %}
-                        <a href="?page={{ tenders.next_page_number }}">наступна</a>
-                        <a href="?page={{ tenders.paginator.num_pages }}">остання &raquo;</a>
+                    <a href="?page={{ tenders.next_page_number }}">наступна</a>
+                    <a href="?page={{ tenders.paginator.num_pages }}">остання &raquo;</a>
                     {% endif %}
                 </span>
             </div>

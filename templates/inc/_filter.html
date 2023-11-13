@@ -1,0 +1,37 @@
+{% load static %}
+<!-- templates/zoda/index.html -->
+<form method="get" action="{% url 'home' %}" class="mt-4" id="filter-form">
+    <div class="form-row">
+        <div class="col-md-4 mb-2">
+            {{ filter_form.region }}
+        </div>
+        <div class="col-md-4 mb-2">
+            {{ filter_form.agency }}
+        </div>
+        <div class="col-md-2 mb-2">
+            <button type="submit" class="btn btn-primary">Фільтрувати</button>
+        </div>
+    </div>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Обработка изменения значения в поле региона
+        $('#id_region').change(function () {
+            var regionId = $(this).val();
+
+            // Очищаем поле агентства перед отправкой запроса
+            $('#id_agency').empty().append('<option value="">Усі установи</option>');
+
+            // Если регион выбран, отправляем запрос для получения агентств
+            if (regionId) {
+                $.getJSON('/get_agencies/' + regionId + '/', function (data) {
+                    $.each(data, function (key, value) {
+                        $('#id_agency').append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+                });
+            }
+        });
+    });
+</script>
