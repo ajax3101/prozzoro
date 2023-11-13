@@ -8,7 +8,7 @@ prozzoro for ZODA
 
 Як веб-інтерфейс використано фреймворк Bootstrap https://getbootstrap.com/
 
-![ToDo на Django](/zoda_img.png)
+![ZODA на Django](/zoda_img.png)
 
 ## Running the Project Locally
 
